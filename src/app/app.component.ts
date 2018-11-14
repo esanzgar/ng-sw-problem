@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -6,15 +6,15 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'ng-sw-problem';
-  result: Object;
+  result: string;
 
   constructor(private _http: HttpClient) {}
 
-  requestData() {
-    this._http.post('https://httpbin.org/post', '{ "myData": "example" }').subscribe(data => this.result = data);
+  ngOnInit() {
+    this._http.get('https://httpbin.org/redirect-to?url=https://httpbin.org/get', { observe: 'response' })
+      .subscribe(response => this.result = response.url);
   }
 
 }
-
